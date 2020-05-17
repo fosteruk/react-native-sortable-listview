@@ -4,8 +4,7 @@ import {
   Animated,
   Dimensions,
   PanResponder,
-  LayoutAnimation,
-  InteractionManager,
+  LayoutAnimation
 } from 'react-native'
 import ListView from 'deprecated-react-native-listview'
 
@@ -458,9 +457,7 @@ class SortableListView extends React.Component {
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.timer = setTimeout(() => this && this.measureWrapper(), 0)
-    })
+    this.timer = setTimeout(() => this && this.measureWrapper(), 0)
   }
 
   componentWillReceiveProps(props) {
