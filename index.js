@@ -208,7 +208,7 @@ class SortableListView extends React.Component {
           return
         }
         const itemHeight = this.state.active.layout.frameHeight
-        const fromIndex = this.order.indexOf(this.state.active.rowData.index)
+        const fromIndex = this.state.order.indexOf(this.state.active.rowData.index)
         let toIndex = this.state.hovering === false
           ? fromIndex
           : Number(this.state.hovering)
@@ -359,7 +359,7 @@ class SortableListView extends React.Component {
     let indexHeight = 0.0
     let i = 0
     let row
-    const order = this.order
+    const order = this.state.order
     let isLast = false
     while (indexHeight < activeRowY + SLOP) {
       const key = order[i]
@@ -415,7 +415,7 @@ class SortableListView extends React.Component {
     const isActiveRow =
       !active && this.state.active && this.state.active.rowData.index === index
 
-    const hoveringIndex = this.order[this.state.hovering] || this.state.hovering
+    const hoveringIndex = this.state.order[this.state.hovering] || this.state.hovering
     return (
       <Component
         {...this.props}
@@ -452,16 +452,11 @@ class SortableListView extends React.Component {
     })
   }
 
-  componentWillMount() {
-    this.setOrder(this.props)
-  }
-
   componentDidMount() {
     this.timer = setTimeout(() => this && this.measureWrapper(), 0)
-  }
-
-  componentWillReceiveProps(props) {
-    this.setOrder(props)
+    this.setState({
+      order: this.props.order
+    })
   }
 
   componentWillUnmount() {
@@ -469,14 +464,20 @@ class SortableListView extends React.Component {
     this.state.pan.removeListener(this.listener)
   }
 
-  setOrder = props => {
-    this.order = props.order || Object.keys(props.data) || []
+  static getDerivedStateFromProps(props, state)
+  {
+    if (props.order != state.order) {
+      return {
+        ...state,
+        order: props.order
+      };
+    }
   }
 
   render() {
     const dataSource = this.state.ds.cloneWithRows(
       this.props.data,
-      this.props.order
+      this.state.order
     )
     const scrollEnabled =
       !this.state.active && this.props.scrollEnabled !== false
