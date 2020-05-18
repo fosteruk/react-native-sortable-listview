@@ -466,12 +466,14 @@ class SortableListView extends React.Component {
 
   static getDerivedStateFromProps(props, state)
   {
+    var result = null;
     if (props.order != state.order) {
-      return {
+      var result = {
         ...state,
         order: props.order
       };
     }
+    return result;
   }
 
   render() {
