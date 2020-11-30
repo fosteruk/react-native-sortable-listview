@@ -164,7 +164,7 @@ class SortableListView extends React.Component {
         dx: this.state.pan.x, // x,y are Animated.Value
         dy: this.state.pan.y,
       },
-    ], {useNativeDriver: true})
+    ], {useNativeDriver: false})
 
     this.moved = false
     this.moveY = null
